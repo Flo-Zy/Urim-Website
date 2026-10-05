@@ -98,7 +98,7 @@ const pointsVert = /* glsl */`
     t = easeOut(t);
     vec3 p = mix(aStart, position, t);
     // leichtes Flimmern wie bei einem Live-Scan
-    p += vec3(sin(uTime*1.7 + aRand*40.0), cos(uTime*1.3 + aRand*30.0), sin(uTime*1.1 + aRand*20.0)) * 0.006;
+    p += vec3(sin(uTime*0.9 + aRand*40.0), cos(uTime*0.7 + aRand*30.0), sin(uTime*0.6 + aRand*20.0)) * 0.003;
     // Zerstreuen beim Weiterscrollen
     p += normalize(position + vec3(0.0, 0.6, 0.0)) * uScatter * (0.6 + aRand * 2.4);
     p.y += uScatter * aRand * 1.5;
@@ -108,7 +108,7 @@ const pointsVert = /* glsl */`
     vFade = t;
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
     gl_Position = projectionMatrix * mv;
-    gl_PointSize = uSize * uPixel * (1.0 + vScan * 2.2) * (0.7 + aRand * 0.6) / -mv.z;
+    gl_PointSize = uSize * uPixel * (1.0 + vScan * 1.2) * (0.7 + aRand * 0.6) / -mv.z;
   }
 `;
 const pointsFrag = /* glsl */`
@@ -121,8 +121,8 @@ const pointsFrag = /* glsl */`
     float a = smoothstep(0.5, 0.1, d);
     vec3 steel = mix(vec3(0.55, 0.58, 0.64), vec3(0.95, 0.96, 0.98), vSeen * 0.7);
     steel = mix(steel, vec3(0.28, 0.29, 0.32), vKind * 0.6);
-    vec3 col = mix(steel, uRed * 1.6, vScan);
-    gl_FragColor = vec4(col, a * (0.55 + vScan * 0.45) * vFade * uOpacity);
+    vec3 col = mix(steel, uRed * 1.15, vScan * 0.85);
+    gl_FragColor = vec4(col, a * (0.5 + vScan * 0.3) * vFade * uOpacity);
   }
 `;
 
@@ -134,18 +134,18 @@ const floorFrag = /* glsl */`
     float dist = length(vPos.xz);
     float fade = smoothstep(14.0, 2.0, dist);
     float g = max(line(vPos.x * 1.0, 0.02), line(vPos.z * 1.0, 0.02));
-    vec3 col = vec3(0.16, 0.17, 0.19) * g * fade;
+    vec3 col = vec3(0.12, 0.13, 0.15) * g * fade;
     // Rundumleuchte: zwei rotierende Lichtkegel
     float ang = atan(vPos.z - 0.0, vPos.x + 3.6);
     float beam = pow(max(0.0, cos(ang - uTime * 2.6)), 18.0) + pow(max(0.0, cos(ang - uTime * 2.6 + 3.14159)), 18.0);
     float fall = smoothstep(16.0, 0.0, length(vPos.xz - vec2(-3.6, 0.0)));
-    col += uOrange * beam * fall * 0.55;
+    col += uOrange * beam * fall * 0.1;
     // Schatten/Glanz unter dem Auto
     float under = smoothstep(2.8, 0.0, length(vPos.xz * vec2(0.55, 1.0)));
     col += vec3(0.05) * under;
     // Laserlinie auf dem Boden
     float laser = smoothstep(0.06, 0.0, abs(vPos.x - uScan)) * smoothstep(3.0, 0.5, abs(vPos.z));
-    col += uRed * laser * 1.2;
+    col += uRed * laser * 0.6;
     gl_FragColor = vec4(col, uOpacity);
   }
 `;
@@ -163,10 +163,10 @@ export function initHero({ canvas, labels = [], mobile = false }) {
   }
   const DPR = Math.min(window.devicePixelRatio || 1, mobile ? 1.5 : 2);
   renderer.setPixelRatio(DPR);
-  renderer.setClearColor('#070707', 1);
+  renderer.setClearColor('#0b0d10', 1);
 
   const scene = new THREE.Scene();
-  scene.fog = new THREE.Fog('#070707', 9, 22);
+  scene.fog = new THREE.Fog('#0b0d10', 9, 22);
   const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 60);
 
   const { bodyGeo, cabinGeo, wheels } = carGeometries();
@@ -230,8 +230,8 @@ export function initHero({ canvas, labels = [], mobile = false }) {
   const state = { progress: 0, mx: 0, my: 0, tmx: 0, tmy: 0 };
   const camAt = (p) => {
     const ang = THREE.MathUtils.lerp(0.62, -2.35, p);           // Umlauf um das Auto
-    const rad = THREE.MathUtils.lerp(8.4, 9.6, p);
-    const h = THREE.MathUtils.lerp(2.0, 3.6, p * p);
+    const rad = THREE.MathUtils.lerp(11.2, 12, p);
+    const h = THREE.MathUtils.lerp(2.4, 3.6, p * p);
     return new THREE.Vector3(Math.sin(ang) * rad, h, Math.cos(ang) * rad);
   };
 
@@ -268,15 +268,23 @@ export function initHero({ canvas, labels = [], mobile = false }) {
     state.my += (state.tmy - state.my) * 0.05;
 
     const p = state.progress;
+    const aspect = canvas.clientWidth / canvas.clientHeight;
+    const wide = aspect > 1.1;
     const cam = camAt(p);
-    // Seitlicher Versatz, damit das Auto rechts neben der Headline steht
-    const wide = canvas.clientWidth / canvas.clientHeight > 1.1;
-    const shift = wide ? THREE.MathUtils.lerp(2.5, 0, Math.min(1, p * 2.2)) : 0;
+    const halfTan = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+    if (!wide) {
+      // Hochformat: Abstand so wählen, dass das ganze Auto in die Breite passt
+      const need = 6.6 / (2 * halfTan * aspect);
+      const len = Math.hypot(cam.x, cam.z);
+      if (need > len) { cam.x *= need / len; cam.z *= need / len; cam.y *= need / len * 0.8; }
+    }
+    // Querformat: Auto rechts neben der Headline
+    const shift = wide ? THREE.MathUtils.lerp(3.1, 0, Math.min(1, p * 2.2)) : 0;
     camera.position.set(cam.x + state.mx * 1.2, cam.y - state.my * 0.8, cam.z);
-    // Blickpunkt seitlich versetzen -> Auto erscheint rechts neben der Headline
     right.subVectors(center, camera.position).normalize().cross(UP).normalize();
     target.copy(center).addScaledVector(right, -shift);
-    target.y += wide ? 0 : -0.9;
+    // Hochformat: Auto ins obere Fünftel, Text darunter
+    if (!wide) target.y -= camera.position.distanceTo(center) * halfTan * 0.58;
     camera.lookAt(target);
     car.rotation.y = Math.sin(t * 0.25) * 0.04;
 

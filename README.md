@@ -3,40 +3,37 @@
 Startseiten-Entwurf für https://kfzgutachter-kokaj.de/ mit 3D-Szene und scroll-gesteuerten Animationen.
 `index.html` direkt im Browser öffnen – funktioniert auch ohne Server.
 
-## Was passiert auf der Seite
-- **Ladebildschirm** mit Logo und Zähler 000 → 100, danach fährt der Vorhang nach oben
-- **3D-Hero (WebGL / Three.js):** Ein Fahrzeug setzt sich aus ~26.000 Lichtpunkten zusammen,
-  ein Laser scannt es, eine Rundumleuchte streift orange über den Boden.
-  Beim Scrollen fährt die Kamera einmal ums Auto, Schadenpunkte erscheinen („Schaden erkannt.“),
-  danach zerfällt das Auto in Partikel. Kamera folgt leicht der Maus.
-- **Laufbänder**, die schneller werden und sich neigen, je schneller man scrollt
-- **3D-Kippkarten** mit Lichtreflex, die der Maus folgen
-- **Fallblattanzeige** mit der echten Uhrzeit in München (24h-Botschaft)
-- **Kosten-Text**, der beim Scrollen Wort für Wort aufleuchtet
-- **Ablauf** als horizontaler Scroll, ein Abschleppwagen fährt die Straße mit
-- Magnetische Buttons, eigener Cursor, Smooth Scroll (Lenis), weiche FAQ-Animationen
-- `prefers-reduced-motion` wird respektiert (keine Animationen, kein Ladebildschirm)
+## Ausrichtung (v3)
+Seriöser Fachbetrieb statt Show: ruhige Typografie, helle Inhaltsbereiche, Rot nur für Handlungen.
+Die Seite spricht Kunden aus ihrer Situation heraus an.
+
+## Aufbau der Startseite
+1. **Hero mit 3D-Szene:** Fahrzeug als Punktwolke, alle paar Sekunden ein ruhiger Laser-Scan mit Schadenmarkierungen
+2. **„Was ist passiert?“:** drei Situationen (Unfall / Panne / Auto prüfen) mit direktem Handlungsknopf
+3. **„Was Sie jetzt tun sollten“:** 5-Punkte-Checkliste nach dem Unfall (hilfreich + gut für SEO)
+4. **Leistungen:** Unfallgutachten, Abschleppdienst, Kaufberatung, Oldtimer, Fahrzeugbewertung
+5. **Ihre Rechte als Geschädigter:** freie Gutachterwahl, Kostenübernahme, Wertminderung, Nutzungsausfall
+6. **Ablauf** in 4 Schritten, **24h-Leiste** mit Live-Uhrzeit, **Über uns**, **FAQ**, **Kontakt + Rückruf-Formular**
+- Mobil: feste Anrufleiste unten; `prefers-reduced-motion` wird respektiert
 
 ## Technik
 - Quellcode in `src/` (`main.js`, `hero3d.js`), gebündelt nach `assets/js/app.js`
-- Bibliotheken: three.js, GSAP + ScrollTrigger, Lenis – alles lokal gebündelt, keine CDNs
-- Schriften (Archivo, variabel, normal + kursiv) als Data-URI in `assets/css/fonts.css` → DSGVO-konform und auch per Doppelklick lauffähig
+- three.js + GSAP, lokal gebündelt (keine CDNs)
+- Schriften (Archivo) als Data-URI in `assets/css/fonts.css` → DSGVO-konform, läuft auch per Doppelklick
 
-Nach Änderungen in `src/` neu bauen:
 ```
 npm install
 npm run build      # oder: npm run watch
 ```
 
 ## SEO
-- H1 „Abschleppdienst & Kfz-Gutachter in München“, Title, Description, Canonical, Open Graph
-- JSON-LD: `AutomotiveBusiness` (24/7-Öffnungszeiten, Leistungen, Adresse) + `FAQPage`
-- Gesplittete Animations-Texte bleiben für Suchmaschinen/Screenreader als Klartext erhalten
-- 3D-Canvas ist rein dekorativ (`aria-hidden`), Fallback-Bild ohne WebGL
+- H1 „Kfz-Gutachter und Abschleppdienst in München“, Title, Description, Canonical, Open Graph
+- JSON-LD: `AutomotiveBusiness` (24/7, Leistungen, Adresse) + `FAQPage`
+- Ratgeber-Inhalte (Checkliste, Rechte) liefern Suchbegriffe wie „was tun nach Unfall“, „freie Gutachterwahl“
 
 ## Offen vor dem Livegang
-- **Abschleppdienst** als Leistung wurde aus dem neuen Logo abgeleitet → mit Kunde klären
-- Markenname: Seite heißt jetzt „Munich Express“, Domain ist noch kfzgutachter-kokaj.de
-- JS-Bundle ist ~200 KB (gzip) wegen three.js → für Produktion 3D erst nach dem ersten Paint nachladen
-- Formular ohne Backend, Impressum/Datenschutz sind Platzhalter
-- Fotos (768 px) gegen hochauflösende tauschen; Logo als Vektor (SVG) besorgen
+- Abschleppdienst + Markenname „Munich Express“ mit Kunde bestätigen
+- Echte Google-Bewertungen einbinden (stärkstes Vertrauenssignal, bewusst keine erfundenen Bewertungen)
+- Formular-Backend, Impressum, Datenschutz
+- Hochauflösende Fotos und Logo als SVG
+- three.js (~180 KB gzip) für Produktion erst nach dem ersten Bildaufbau nachladen
