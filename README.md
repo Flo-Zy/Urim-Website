@@ -37,3 +37,10 @@ npm run build      # oder: npm run watch
 - Formular-Backend, Impressum, Datenschutz
 - Hochauflösende Fotos und Logo als SVG
 - three.js (~180 KB gzip) für Produktion erst nach dem ersten Bildaufbau nachladen
+
+## Variante v4 – Japandi (`index-v4.html`)
+Alternative Gestaltung, erzeugt mit der Prompt-Vorlage (Stil per Zufall: **Japandi**). Prompt: `prompts/v4-japandi.md`.
+Idee: „Nach dem Unfall wird es laut. Bei uns wird es ruhig.“ – Stein- und Eichentöne, viel Weißraum,
+ein roter Prüfstempel (Hanko) als einziger Farbakzent, ein Pinselkreis (Ensō) mit Live-Uhrzeit.
+Ohne 3D und ohne Bibliotheken (`assets/css/v4.css`, `assets/js/v4.js`, Schrift `fonts-v4.css`).
+Steht auf `noindex`, damit sie nicht mit der Hauptseite konkurriert.
