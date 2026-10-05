@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kfzgutachter-kokaj.de/sitemap.xml
