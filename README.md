@@ -1,28 +1,42 @@
-# Kfz-Gutachter Kokaj – neue Startseite (Entwurf)
+# Munich Express – Abschleppdienst & Kfz-Gutachter Kokaj (Entwurf v2)
 
-Erster Designentwurf für die Hauptseite von https://kfzgutachter-kokaj.de/.
-Reines HTML/CSS/JS, keine Abhängigkeiten, kein Build-Schritt – `index.html` im Browser öffnen.
+Startseiten-Entwurf für https://kfzgutachter-kokaj.de/ mit 3D-Szene und scroll-gesteuerten Animationen.
+`index.html` direkt im Browser öffnen – funktioniert auch ohne Server.
 
-## Aufbau
-- `index.html` – Startseite inkl. Meta-Tags, Open Graph, JSON-LD (LocalBusiness + FAQPage)
-- `assets/css/style.css` – Design-Tokens (Farben aus dem Logo), Layout, Animationen
-- `assets/js/main.js` – Menü, Header, Hero-Zähler, Ablauf-Animation, Formular-Validierung
-- `assets/fonts/` – Archivo (variabel) lokal gehostet → DSGVO-konform, kein Google-Fonts-Request
-- `robots.txt`, `sitemap.xml`, `site.webmanifest`, Favicons
+## Was passiert auf der Seite
+- **Ladebildschirm** mit Logo und Zähler 000 → 100, danach fährt der Vorhang nach oben
+- **3D-Hero (WebGL / Three.js):** Ein Fahrzeug setzt sich aus ~26.000 Lichtpunkten zusammen,
+  ein Laser scannt es, eine Rundumleuchte streift orange über den Boden.
+  Beim Scrollen fährt die Kamera einmal ums Auto, Schadenpunkte erscheinen („Schaden erkannt.“),
+  danach zerfällt das Auto in Partikel. Kamera folgt leicht der Maus.
+- **Laufbänder**, die schneller werden und sich neigen, je schneller man scrollt
+- **3D-Kippkarten** mit Lichtreflex, die der Maus folgen
+- **Fallblattanzeige** mit der echten Uhrzeit in München (24h-Botschaft)
+- **Kosten-Text**, der beim Scrollen Wort für Wort aufleuchtet
+- **Ablauf** als horizontaler Scroll, ein Abschleppwagen fährt die Straße mit
+- Magnetische Buttons, eigener Cursor, Smooth Scroll (Lenis), weiche FAQ-Animationen
+- `prefers-reduced-motion` wird respektiert (keine Animationen, kein Ladebildschirm)
 
-## SEO umgesetzt
-- Ein `<h1>` mit Hauptkeyword „Kfz-Gutachter in München", saubere H2/H3-Hierarchie
-- Title (< 60 Z.) und Meta-Description mit Keyword, Ort und Telefonnummer
-- Canonical, Open Graph / Twitter Card, `lang="de"`
-- Schema.org: `ProfessionalService` (Adresse, Telefon, Leistungen, Einsatzgebiet, Social) und `FAQPage`
-- Semantisches HTML, Alt-Texte, Bildgrößen gesetzt (kein Layout-Shift), WebP + JPG-Fallback, Lazy Loading
-- Lokale Keywords (Stadtteile, Landkreis) im Text
-- Barrierearm: Skip-Link, sichtbarer Fokus, `prefers-reduced-motion`, Tap-Targets ≥ 44 px
+## Technik
+- Quellcode in `src/` (`main.js`, `hero3d.js`), gebündelt nach `assets/js/app.js`
+- Bibliotheken: three.js, GSAP + ScrollTrigger, Lenis – alles lokal gebündelt, keine CDNs
+- Schriften (Archivo, variabel, normal + kursiv) als Data-URI in `assets/css/fonts.css` → DSGVO-konform und auch per Doppelklick lauffähig
+
+Nach Änderungen in `src/` neu bauen:
+```
+npm install
+npm run build      # oder: npm run watch
+```
+
+## SEO
+- H1 „Abschleppdienst & Kfz-Gutachter in München“, Title, Description, Canonical, Open Graph
+- JSON-LD: `AutomotiveBusiness` (24/7-Öffnungszeiten, Leistungen, Adresse) + `FAQPage`
+- Gesplittete Animations-Texte bleiben für Suchmaschinen/Screenreader als Klartext erhalten
+- 3D-Canvas ist rein dekorativ (`aria-hidden`), Fallback-Bild ohne WebGL
 
 ## Offen vor dem Livegang
-- Kontaktformular hat noch kein Backend (nur Validierung im Browser)
-- Impressum / Datenschutz verlinken auf Platzhalter
-- Öffnungszeiten und Geo-Koordinaten im JSON-LD ergänzen, sobald bestätigt
-- Bilder stammen von der alten Website und sind nur 768 px breit → für den Hero hochauflösende Fotos besorgen
-- Aussagen zu Kostenübernahme / Bagatellgrenze vom Kunden absegnen lassen
-- Unterseiten (Unfallgutachten, Kaufberatung …) anlegen und in `sitemap.xml` eintragen
+- **Abschleppdienst** als Leistung wurde aus dem neuen Logo abgeleitet → mit Kunde klären
+- Markenname: Seite heißt jetzt „Munich Express“, Domain ist noch kfzgutachter-kokaj.de
+- JS-Bundle ist ~200 KB (gzip) wegen three.js → für Produktion 3D erst nach dem ersten Paint nachladen
+- Formular ohne Backend, Impressum/Datenschutz sind Platzhalter
+- Fotos (768 px) gegen hochauflösende tauschen; Logo als Vektor (SVG) besorgen
