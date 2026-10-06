@@ -48,8 +48,6 @@ Steht auf `noindex`, damit sie nicht mit der Hauptseite konkurriert.
 ## Variante v5 – Original, aber besser (`index-v5.html`)
 Aufbau und Ideen der bestehenden Seite, gestaltet mit dem neuen **Munich-Express-Logo** (Rot/Schwarz/Weiß/Silber).
 Das Foto steckt in Wappenform (Anlehnung an das alte Kokaj-Wappen), Rauten bleiben als Gestaltungselement.
-- **Gutachter-Lupe:** Die Lupe aus dem Logo fährt über das Unfallfoto und zeigt Beispielbefunde mit Messwerten.
-  Mit der Maus selbst führbar, auf dem Handy per Tippen. Zähler „x von 5 Befunden entdeckt“.
 - **Gutachten-Check:** 3 Fragen → ehrliche Empfehlung (Gutachten / Kostenvoranschlag / Beratung), inkl. Abschlepp-Hinweis
 - Foto im Wappen-Umriss mit Chromrand, Rautenband, das sich beim Scrollen umdreht, Ablauf als Rauten-Straße
 - Abschleppdienst als eigene Hauptleistung
