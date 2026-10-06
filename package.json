@@ -5,7 +5,10 @@
   "description": "Startseite Munich Express – Abschleppdienst & Kfz-Gutachter Kokaj (Entwurf)",
   "scripts": {
     "build": "esbuild src/main.js --bundle --minify --format=iife --target=es2019 --outfile=assets/js/app.js",
-    "watch": "esbuild src/main.js --bundle --format=iife --target=es2019 --outfile=assets/js/app.js --watch"
+    "watch": "esbuild src/main.js --bundle --format=iife --target=es2019 --outfile=assets/js/app.js --watch",
+    "build:v6": "esbuild src/v6.js --bundle --minify --format=iife --target=es2019 --outfile=assets/js/v6.js",
+    "build:v7": "esbuild src/v7.js --bundle --minify --format=iife --target=es2019 --outfile=assets/js/v7.js",
+    "build:v8": "esbuild src/v8.js --bundle --minify --format=iife --target=es2019 --outfile=assets/js/v8.js"
   },
   "devDependencies": {
     "esbuild": "^0.28.2"

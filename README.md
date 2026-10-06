@@ -52,3 +52,31 @@ Das Foto steckt in Wappenform (Anlehnung an das alte Kokaj-Wappen), Rauten bleib
 - Foto im Wappen-Umriss mit Chromrand, Rautenband, das sich beim Scrollen umdreht, Ablauf als Rauten-Straße
 - Abschleppdienst als eigene Hauptleistung
 - Ohne Bibliotheken (`assets/css/v5.css`, `assets/js/v5.js`), `noindex` bis zur Entscheidung
+
+## Variante v6 – Bayerisch-Blau mit Animationen (`index-v6.html`)
+Von Grund auf neu, Texte der Originalseite. Farben und Rauten aus dem Kokaj-Wappen: Nachtblau, ein kräftiges Blau als Akzent.
+- **Hero:** Rautenfeld (Canvas), das auf den Mauszeiger reagiert; Foto klappt aus einer Raute auf
+- **Laufband**, das beim Scrollen schneller wird und sich neigt
+- **Versprechen:** Abschnitt bleibt stehen, die Wörter füllen sich beim Scrollen
+- **Leistungen:** seitlicher Schwenk durch die drei Leistungen (am Handy untereinander)
+- Team-Fotos neigen sich zum Mauszeiger, Telefonnummer rollt ein, Anruf-Button zieht zum Mauszeiger
+- Quellcode `src/v6.js` (GSAP + ScrollTrigger), gebündelt mit `npm run build:v6` nach `assets/js/v6.js`; Stil in `assets/css/v6.css`
+- Bei der Systemeinstellung „Bewegung reduzieren“ bleibt die Seite ruhig. Zum Ansehen trotzdem: `index-v6.html?motion=1`
+- `noindex` bis zur Entscheidung
+
+## Gesamtpaket v7 – beide Unternehmen (`index-v7.html`)
+Gestaltung und Animationen der v6, dazu beide Unternehmen des Kunden: **KFZ Sachverständiger & Gutachter Kokaj** und **Munich Express Abschleppdienst**.
+Texte stammen von kfzgutachter-kokaj.de inklusive der Unterseiten Unfallgutachten, Kaufberatung, Über uns und Kontakt.
+- Zwei-Unternehmen-Karten unter dem Hero, Abschleppdienst als vierte Leistung im seitlichen Schwenk
+- Unfallgutachten: Service-Kacheln und Vorteile; Kaufberatung: sechs Schritte als Kartenstapel beim Scrollen
+- Kontakt mit Formular (Name, Telefon, E-mail, Nachricht). Noch ohne Server: öffnet eine vorbereitete E-Mail
+- **Nicht vom Original:** die zwei Sätze zum Abschleppdienst (im HTML markiert) und die Fehlermeldungen des Formulars
+- Quellcode `src/v7.js`, Build `npm run build:v7`, Stil `assets/css/v7.css`; Animationen bei „Bewegung reduzieren“ mit `?motion=1` ansehen
+
+## Gesamtpaket v8 – v5-Design mit beiden Unternehmen (`index-v8.html`)
+Aktueller Stand. Gestaltung der v5 (Rot/Schwarz/Silber, schräge Formen, Siegel, Laufband), die dem Kunden gefallen hat,
+kombiniert mit den Inhalten der v7 (beide Unternehmen, Texte der Unterseiten, Kontaktformular) und GSAP-Bewegung.
+- `assets/css/v8.css` baut auf `v5.css` auf; neue Abschnitte (Firmenkarten, Abschleppdienst, Service-Kacheln, Kartenstapel, Formular) in derselben Formsprache
+- Quellcode `src/v8.js`, Build `npm run build:v8`
+- Animationen laufen nur ohne „Bewegung reduzieren“; zum Ansehen trotzdem `index-v8.html?motion=1`
+- Nicht vom Original: die zwei Sätze zum Abschleppdienst (im HTML markiert) und die Fehlermeldungen des Formulars
